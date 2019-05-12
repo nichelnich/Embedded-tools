@@ -1,2 +1,2 @@
 all:
-	$CC -o efsync efsync.c -Wall
+	${CC} -o efsync efsync.c -Wall

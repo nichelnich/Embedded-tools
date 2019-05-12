@@ -5,6 +5,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
 
@@ -12,10 +13,14 @@ int test_upgrade_fsync(const char *file)
 {
 	int fd;
 	int ret = -1;
+    struct stat status;
 
 	if (file) {
 		fd = open(file, O_RDONLY);
 		if (fd >= 0) {
+            ret = fstat(fd, &status);
+            if (ret != 0) {close(fd); return -1;}
+            if (!(S_ISREG(status.st_mode) || S_ISDIR(status.st_mode))) {close(fd); return -1;}
 			do {
 				ret = fsync(fd);
 			}

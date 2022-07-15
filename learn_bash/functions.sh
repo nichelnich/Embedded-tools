@@ -20,3 +20,9 @@ check_ip() {
   printf '%s' "$1" | tr -d '\n' | grep -Eq "$IP_REGEX"
 }
 
+check_ip() {
+    if ip -6 route get $value;then
+        return 0
+    fi
+    return 1
+}
